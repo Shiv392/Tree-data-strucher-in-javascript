@@ -89,6 +89,42 @@ class BST{
             }
         }
     }
+    min(root){
+        if(root.left==null) return root.data;
+        else return this.min(root.left);
+    }
+    max(root){
+        if(root.right==null) return root.data;
+        else return this.max(root.right);
+    }
+    delete(value){
+        this.root= this.deleteNode(this.root,value);
+    }
+    deleteNode(root,value){
+        if(root==null) {
+            return root;
+        }
+        if(value < root.data){
+            root.left= this.deleteNode(root.left,value);
+        }
+        else if(value > root.data){
+            root.right=this.deleteNode(root.right,value);
+        }
+        else{
+          if(!root.left && !root.right){
+            return null;
+          }
+          if(!root.left){
+            return root.right;
+          }
+          else if(!root.right){
+            return root.left;
+          }
+          root.data= this.min(root.right);
+          root.right= this.deleteNode(root.right, root.data);
+        }
+        return root
+    }
 }
 let bst= new BST();
 console.log('is binary tree empty?',bst.isEmpty());
@@ -110,3 +146,12 @@ console.log(`post order`);
 bst.postOrder(bst.root);
 console.log(`bfs`);
 bst.BFS();
+console.log('min in bst---->',bst.min(bst.root));
+console.log('max in bst---->',bst.max(bst.root));
+bst.delete(3);
+console.log(`bfs after deleting 3`);
+bst.BFS();
+bst.delete(10);
+console.log(`bfs after deleting 10`);
+bst.BFS();
+
